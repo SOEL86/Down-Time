@@ -1,0 +1,115 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: sans-serif;
+    overflow: hidden;
+}
+#OptionsPane {
+    top: 49vh;
+    bottom: 49vh;
+    width: 100%;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-variant: small-caps;
+}
+#OptionsPane .option {
+    height: 100%;
+    font-size: 3vw;
+    background: 0;
+    border: 0;
+    margin:0;
+    padding:0;
+    padding-left:40px;
+    padding-right:40px;
+    cursor: pointer;
+    color: gray;
+    opacity: 0.5;
+}
+#OptionsPane .selected {
+    color: lightgray;
+    opacity: 1;
+}
+#ContainerBox {
+    height: 100%;
+    width: 100%;
+    background-color:darkorange;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+#WorkPane {
+    background-color: cornflowerblue;
+    cursor: pointer;
+}
+#PlayPane {
+    background-color: forestgreen;
+    cursor: pointer;
+}
+.myButton {
+    color: white;
+    font-variant: small-caps;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 0;
+    border-left:30px solid black;
+    border-bottom: 20px solid black;
+    border-top: 4px solid white;
+    border-right: 6px solid white;
+    border-radius: 80px;
+    height: 45vh;
+    width: 90vw;
+    cursor: pointer;
+    pointer-events: all;
+    overflow: hidden;
+}
+.adSpace {
+}
+.adSpace::after {
+  content: "";
+  background-image: url("adspace.png");
+  background-size: cover;
+  opacity: 0.5;
+
+  position: absolute;
+  z-index: 10;   
+}
+.myButton h1 {
+    margin: 0;
+    padding: 0;
+    height: 20vh;
+    font-size: 25vw;
+    text-shadow: -4px 6px #000000;
+    pointer-events: none;
+}
+h2 {
+    margin: 0;
+    padding: 0;
+    height: 15vh;
+    font-size: 15vw;
+    text-shadow: -4px 6px #000000;
+}
+.flash {
+    animation-name: flash-animation;
+    animation-duration: 0.9s;
+}
+
+@keyframes flash-animation {  
+    from { background: yellow; }
+    to   { background: default; }
+}
+.flashred {
+    animation-name: flashred-animation;
+    animation-duration: 0.5s;
+}
+
+@keyframes flashred-animation {  
+    from { background: red; }
+    to   { background: default; }
+}

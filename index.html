@@ -1,0 +1,152 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<title>Down Time</title>
+<meta name="description" content="Down Time">
+<meta name="author" content="Michael MC">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="ContainerBox">
+        <div class="myButton" id="WorkPane">
+            <h1 id="WorkTitle">work</h1>
+            <h2 id="WorkTime">00:00:00</h2>
+        </div>
+    <div id="OptionsPane">
+        <span class="option" value="4">4:1</span>
+        <span class="option selected" value="3">3:1</span>
+        <span class="option" value="2">2:1</span>
+        <span class="option" value="1">1:1</span>
+    </div>
+        <div class="myButton" id="PlayPane">
+            <h1 id="PlayTitle">play</h1>
+            <h2 id="PlayTime">00:00:00</h2>
+        </div>
+    </div>
+<script>
+
+    var workPane = document.getElementById("WorkPane"),
+        workTitle = document.getElementById("WorkTitle"),
+        workTime = document.getElementById("WorkTime"),
+        playPane = document.getElementById("PlayPane"),
+        playTitle = document.getElementById("PlayTitle"),
+        playTime = document.getElementById("PlayTime"),
+        workSeconds = 0, workMinutes = 0, workHours = 0,
+        playSeconds = 0, playMinutes = 0, playHours = 0,
+        timeDivision = 3,
+        timeDivisionTimer = 0,
+        tWork, tPlay,
+        clang = new Audio('Clang.wav'),
+        timeDivisionSwitches = document.getElementsByClassName("option"),
+        i, j;
+    
+    document.getElementById('PlayPane').style.pointerEvents = 'none';
+    document.getElementById('PlayPane').style.backgroundColor = 'lightgray';
+    
+    for (i = 0; i < timeDivisionSwitches.length; i++) {
+        timeDivisionSwitches[i].onclick = function() {
+            timeDivision = parseInt(this.getAttribute("value"));
+            for (j = 0; j < timeDivisionSwitches.length; j++) {
+                timeDivisionSwitches[j].classList.remove("selected");
+            };
+            this.classList.add("selected");
+        };
+    }
+    function addWork() {
+        timeDivisionTimer++;
+        workSeconds++;
+        if (workSeconds >= 60) {
+            workSeconds = 0;
+            workMinutes++;
+            if (workMinutes >= 60) {
+                workMinutes = 0;
+                workHours++;
+            }
+        }
+        workTime.textContent = (workHours ? (workHours > 9 ? workHours : "0" + workHours) : "00") + ":" + (workMinutes ? (workMinutes > 9 ? workMinutes : "0" + workMinutes) : "00") + ":" + (workSeconds > 9 ? workSeconds : "0" + workSeconds);
+        if(timeDivisionTimer >= timeDivision) {
+            addPlay();
+            timeDivisionTimer = 0;
+        }
+        workTimer();
+    }
+    function addPlay() {
+        playSeconds++;
+        if (playSeconds >= 60) {
+            playSeconds = 0;
+            playMinutes++;
+            if (playMinutes >= 60) {
+                playMinutes = 0;
+                playHours++;
+            }
+        }
+        playTime.textContent = (playHours ? (playHours > 9 ? playHours : "0" + playHours) : "00") + ":" + (playMinutes ? (playMinutes > 9 ? playMinutes : "0" + playMinutes) : "00") + ":" + (playSeconds > 9 ? playSeconds : "0" + playSeconds);
+        document.getElementById('PlayPane').classList.add("flash");
+        setTimeout(function() {
+            document.getElementById('PlayPane').classList.remove("flash");
+        }, 900);
+    }
+    function subtractPlay() {
+        if (playSeconds === 0 && playMinutes === 0 && playHours === 0) { 
+            clang.play();
+            clearTimeout(tPlay);
+            playTime.textContent = (playHours ? (playHours > 9 ? playHours : "0" + playHours) : "00") + ":" + (playMinutes ? (playMinutes > 9 ? playMinutes : "0" + playMinutes) : "00") + ":" + (playSeconds > 9 ? playSeconds : "0" + playSeconds);
+            return;
+        }
+        playSeconds--;
+        if (playSeconds <= 0) {
+            if (!(playMinutes <= 0)) {
+                playSeconds = 60;
+                playMinutes--;
+                if (!(playHours <= 0)) {
+                    playMinutes = 60;
+                    playHours--;
+                }
+            }
+        }
+        playTime.textContent = (playHours ? (playHours > 9 ? playHours : "0" + playHours) : "00") + ":" + (playMinutes ? (playMinutes > 9 ? playMinutes : "0" + playMinutes) : "00") + ":" + (playSeconds > 9 ? playSeconds : "0" + playSeconds);
+        playTimer();
+        document.getElementById('PlayPane').classList.add("flashred");
+        setTimeout(function() {
+            document.getElementById('PlayPane').classList.remove("flashred");
+        }, 600);
+    }
+    function workTimer() {
+        tWork = setTimeout(addWork, 1000);
+    }
+    function playTimer() {
+        tPlay = setTimeout(subtractPlay, 1000);
+    }
+    workPane.onclick = function() {
+        workTimer();
+        clearTimeout(tPlay);
+        document.getElementById('WorkPane').style.pointerEvents = 'none';
+        document.getElementById('WorkPane').style.backgroundColor = 'lightgray';
+        document.getElementById('WorkPane').classList.add("adSpace");
+        document.getElementById('PlayPane').style.pointerEvents = 'auto';
+        document.getElementById('PlayPane').style.backgroundColor = 'forestgreen';
+        document.getElementById('PlayPane').classList.remove("adSpace");
+    }
+    playPane.onclick = function() {
+        timeDivisionTimer = 0;
+        playTimer();
+        clearTimeout(tWork);
+        workTime.textContent = "00:00:00";
+        workSeconds = 0; workMinutes = 0; workHours = 0;
+        document.getElementById('PlayPane').style.pointerEvents = 'none';
+        document.getElementById('PlayPane').style.backgroundColor = 'lightgray';
+        document.getElementById('PlayPane').classList.add("adSpace");
+        document.getElementById('WorkPane').style.pointerEvents = 'auto';
+        document.getElementById('WorkPane').style.backgroundColor = 'cornflowerblue';
+        document.getElementById('WorkPane').classList.remove("adSpace");
+    }
+    
+</script>
+</body>
+</html>
